@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Late Night Lab — DIY Electronics Kits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F8FAFC;
+    --ink: #0F172A;
+    --ink-soft: #64748B;
+    --accent: #4F46E5;
+    --accent-soft: #E0E7FF;
+    --line: #E2E8F0;
+    --card: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(255, 255, 255, 0.8);
+    --header-bg: rgba(248, 250, 252, 0.85);
+    --icon-bg: #FFFFFF;
+    --icon-gradient: linear-gradient(135deg, var(--accent-soft), #fff);
+    --shadow-color: rgba(79, 70, 229, 0.15);
+    --whatsapp: #10B981;
+    --whatsapp-ink: #065F46;
+    --whatsapp-bg: #E8FBF0;
+    --whatsapp-hover: #D1FAE5;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0B1120;
+    --ink: #F8FAFC;
+    --ink-soft: #94A3B8;
+    --accent: #818CF8;
+    --accent-soft: rgba(99, 102, 241, 0.15);
+    --line: #1E293B;
+    --card: rgba(30, 41, 59, 0.6);
+    --card-border: rgba(51, 65, 85, 0.8);
+    --header-bg: rgba(11, 17, 32, 0.85);
+    --icon-bg: #1E293B;
+    --icon-gradient: linear-gradient(135deg, var(--accent-soft), #1E293B);
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --whatsapp: #10B981;
+    --whatsapp-ink: #34D399;
+    --whatsapp-bg: rgba(16, 185, 129, 0.1);
+    --whatsapp-hover: rgba(16, 185, 129, 0.2);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background-color: var(--bg);
+    background-image: radial-gradient(var(--line) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3 { font-family: 'Archivo', sans-serif; margin: 0; }
+
+  .mono{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Layout shell ---------- */
+
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Header ---------- */
+
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--header-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  header .wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .brand{
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 3px;
+    box-shadow: 0 0 10px var(--accent-soft);
+  }
+
+  .brand span{ color: var(--accent); }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .theme-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .theme-btn:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .theme-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Hide moon by default, show sun. In dark mode, hide sun, show moon */
+  .theme-btn .moon-icon { display: none; }
+  [data-theme="dark"] .theme-btn .sun-icon { display: none; }
+  [data-theme="dark"] .theme-btn .moon-icon { display: block; }
+
+  .nav-cta{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, color 0.3s ease;
+  }
+
+  .nav-cta:hover{ 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px var(--shadow-color);
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero{
+    padding: 80px 0 64px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero h1{
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    max-width: 12ch;
+  }
+
+  .hero p{
+    margin-top: 24px;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 48ch;
+  }
+
+  .hero-actions{
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--whatsapp);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+  }
+
+  .btn-primary:hover{ 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); 
+  }
+
+  .hero-note{
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+  }
+
+  .hero-visual{
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-visual svg{ width: 100%; height: 100%; drop-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+  .trace-flow{
+    stroke-dasharray: 8 12;
+    animation: flow 2s linear infinite;
+  }
+
+  @keyframes flow{
+    to{ stroke-dashoffset: -40; }
+  }
+
+  /* ---------- Section headings ---------- */
+
+  .section-head{
+    padding: 8px 0 34px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+    padding-top: 48px;
+    transition: border-color 0.3s ease;
+  }
+
+  .section-head h2{
+    font-size: 1.8rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-head p{
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    max-width: 36ch;
+    text-align: right;
+  }
+
+  /* ---------- Catalog grid ---------- */
+
+  .catalog{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-bottom: 40px;
+  }
+
+  .card{
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.3s ease;
+  }
+
+  .card:hover{ 
+    transform: translateY(-4px); 
+    box-shadow: 0 12px 24px -4px var(--shadow-color), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--accent);
+  }
+
+  .card-img-wrap {
+    margin: -26px -26px 20px -26px;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .card:hover .card-img-wrap img {
+    transform: scale(1.05);
+  }
+
+  .card-icon{
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--icon-gradient);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .card-icon svg{ width: 26px; height: 26px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+
+  .card h3{
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .card .desc{
+    margin-top: 10px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    flex-grow: 1;
+  }
+
+  .card .spec{
+    margin-top: 18px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .card-footer{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    transition: border-color 0.3s ease;
+  }
+
+  .price{
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+
+  .ask-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--whatsapp-ink);
+    background: var(--whatsapp-bg);
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.2s ease, transform 0.2s ease, color 0.3s ease;
+  }
+
+  .ask-btn:hover{ background: var(--whatsapp-hover); transform: translateY(-1px); }
+
+  .ask-btn svg{ width: 15px; height: 15px; fill: currentColor; }
+
+  /* ---------- How it works ---------- */
+
+  .steps{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-bottom: 70px;
+  }
+
+  .step{
+    padding: 24px;
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .step h3{ font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; }
+  .step p{ margin: 0; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ---------- Footer ---------- */
+
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 40px 0 48px;
+    background: var(--card);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  footer .wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  footer .brand{ font-size: 1.1rem; display: flex; align-items: center; gap: 6px; font-weight: 800;}
+  footer .brand::before {
+    content: ''; display: block; width: 8px; height: 8px; background: var(--accent); border-radius: 2px;
+  }
+  footer .fine{ color: var(--ink-soft); font-size: 0.9rem; }
+
+  /* ---------- Floating WhatsApp button ---------- */
+
+  .float-wa{
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--whatsapp);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    z-index: 30;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .float-wa:hover{ transform: scale(1.08) translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5); }
+  .float-wa svg{ width: 28px; height: 28px; fill: #fff; }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns: 1fr; padding-top: 48px; }
+    .hero-visual{ order: -1; max-width: 380px; margin: 0 auto; }
+    .catalog{ grid-template-columns: repeat(2, 1fr); }
+    .steps{ grid-template-columns: 1fr; }
+    .section-head{ flex-direction: column; align-items: flex-start; gap: 8px; }
+    .section-head p{ text-align: left; }
+  }
+
+  @media (max-width: 560px){
+    .catalog{ grid-template-columns: 1fr; }
+    .wrap{ padding: 0 24px; }
+    footer .wrap{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .trace-flow{ animation: none; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">Late Night <span>Lab</span></div>
+    <div class="header-actions">
+      <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark Mode">
+        <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a class="nav-cta" href="#catalog">
+        See the kits
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div>
+      <h1>Custom college projects built to leave an impression—reliable, affordable, and fully tested.</h1>
+      <p>Everything here is soldered, coded, and debugged by hand. No factory line, no bulk stock.<br><br><strong style="color: var(--accent);">📍 Only available in Noida and Greater Noida</strong></p>
+    </div>
+
+    <div class="hero-visual">
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="traceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--accent)" />
+            <stop offset="100%" stop-color="#06B6D4" /> <!-- Cyan pop -->
+          </linearGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        
+        <!-- Traces connecting to the chip -->
+        <g fill="none" stroke="url(#traceGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Animated traces -->
+          <path d="M 40 150 L 100 150 L 130 180 L 160 180" class="trace-flow" />
+          <path d="M 360 100 L 300 100 L 270 130 L 240 130" class="trace-flow" style="animation-delay: 1s;" />
+          <path d="M 40 220 L 120 220 L 150 190 L 160 190" class="trace-flow" style="animation-delay: 0.5s;" />
+          <!-- Static traces -->
+          <path d="M 80 80 L 110 80 L 140 110 L 160 110" />
+          <path d="M 320 240 L 280 240 L 250 210 L 240 210" />
+          <path d="M 200 40 L 200 80" />
+          <path d="M 200 260 L 200 220" />
+        </g>
+
+        <!-- Nodes -->
+        <g fill="var(--bg)" stroke="url(#traceGrad)" stroke-width="2.5">
+          <circle cx="40" cy="150" r="5" />
+          <circle cx="360" cy="100" r="5" />
+          <circle cx="40" cy="220" r="5" />
+          <circle cx="80" cy="80" r="5" />
+          <circle cx="320" cy="240" r="5" />
+          <circle cx="200" cy="40" r="5" />
+          <circle cx="200" cy="260" r="5" />
+        </g>
+
+        <!-- Microchip Body -->
+        <rect x="160" y="110" width="80" height="80" rx="10" fill="var(--icon-bg)" stroke="var(--ink)" stroke-width="4" filter="url(#glow)"/>
+        
+        <!-- Microchip Pins -->
+        <g fill="var(--ink)">
+          <rect x="152" y="125" width="8" height="10" rx="2" />
+          <rect x="152" y="145" width="8" height="10" rx="2" />
+          <rect x="152" y="165" width="8" height="10" rx="2" />
+          
+          <rect x="240" y="125" width="8" height="10" rx="2" />
+          <rect x="240" y="145" width="8" height="10" rx="2" />
+          <rect x="240" y="165" width="8" height="10" rx="2" />
+          
+          <rect x="175" y="102" width="10" height="8" rx="2" />
+          <rect x="195" y="102" width="10" height="8" rx="2" />
+          <rect x="215" y="102" width="10" height="8" rx="2" />
+          
+          <rect x="175" y="190" width="10" height="8" rx="2" />
+          <rect x="195" y="190" width="10" height="8" rx="2" />
+          <rect x="215" y="190" width="10" height="8" rx="2" />
+        </g>
+        
+        <!-- Core detail -->
+        <rect x="176" y="126" width="48" height="48" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5" />
+        <circle cx="188" cy="138" r="4" fill="var(--accent)" />
+      </svg>
+    </div>
+  </section>
+
+  <div class="section-head" id="catalog">
+    <h2>The catalog</h2>
+    <p>Six kits, each one hand-built. Tap a card to ask about stock, price or a custom build.</p>
+  </div>
+
+  <div class="catalog" id="catalog-grid"></div>
+
+  <div class="section-head">
+    <h2>How buying works</h2>
+    <p>No cart, no checkout page — just a chat.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>1. Pick a kit</h3>
+      <p>Browse the catalog above and find something that fits your project or budget.</p>
+    </div>
+    <div class="step">
+      <h3>2. Message on WhatsApp</h3>
+      <p>Tap "Ask about this" and a message opens up already filled in with the kit name.</p>
+    </div>
+    <div class="step">
+      <h3>3. Sort out pickup or delivery</h3>
+      <p>We figure out payment and handover directly in chat — usually same day, on campus.</p>
+    </div>
+  </div>
+
+  <div class="custom-idea-section" style="text-align: center; padding: 70px 0; border-top: 1px solid var(--line); margin-top: 20px;">
+    <h2 style="font-size: 2.2rem; margin-bottom: 24px; letter-spacing: -0.02em;">Have your own idea? Get it built.</h2>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+      <a class="btn-primary" id="custom-wa-btn" href="#" target="_blank" rel="noopener" style="font-size: 1.1rem; padding: 16px 28px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.85.5 3.58 1.36 5.06L2 22l5.2-1.46a9.89 9.89 0 0 0 4.84 1.24h.005c5.46 0 9.91-4.45 9.91-9.91C21.955 6.45 17.5 2 12.04 2zm0 18.13h-.004a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.09.87.83-3.02-.2-.31a8.18 8.18 0 0 1-1.26-4.4c0-4.53 3.69-8.22 8.23-8.22 2.2 0 4.26.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.82c0 4.53-3.7 8.22-8.24 8.22z"/></svg>
+        Message me on WhatsApp
+      </a>
+      <span class="mono" style="color: var(--ink-soft); margin-top: 8px;">usually replies within a few hours</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">Late Night <span>Lab</span></div>
+    <div class="fine">Made on campus, one solder joint at a time.</div>
+  </div>
+</footer>
+
+<a class="float-wa" id="float-wa-btn" href="#" target="_blank" rel="noopener" aria-label="Message on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.85.5 3.58 1.36 5.06L2 22l5.2-1.46a9.89 9.89 0 0 0 4.84 1.24h.005c5.46 0 9.91-4.45 9.91-9.91C21.955 6.45 17.5 2 12.04 2zm0 18.13h-.004a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.09.87.83-3.02-.2-.31a8.18 8.18 0 0 1-1.26-4.4c0-4.53 3.69-8.22 8.23-8.22 2.2 0 4.26.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.82c0 4.53-3.7 8.22-8.24 8.22z"/></svg>
+</a>
+
+<script>
+  // Catalog data is shared with admin.html via localStorage.
+  // Edits in admin.html appear here automatically — even across tabs.
+  const DRAFT_KEY = 'lnl_catalog_draft';
+  const DATA_URL  = 'catalog-data.json';
+
+  const ICONS = {
+    chip:   `<path d="M6 6h12v12H6z"/><path d="M9 6V3M15 6V3M9 21v-3M15 21v-3M6 9H3M6 15H3M21 9h-3M21 15h-3"/>`,
+    robot:  `<circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8"/><path d="M9 7V4h6v3"/>`,
+    iron:   `<path d="M4 20l6-6"/><path d="M13.5 4.5l6 6L14 16l-6-6z"/><circle cx="18" cy="6" r="1.4"/>`,
+    sensor: `<path d="M9 14a3 3 0 1 0 6 0V6a3 3 0 0 0-6 0v8z"/><path d="M9 10h6"/>`,
+    matrix: `<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h.01M12 8h.01M16 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>`,
+    gear:   `<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3"/>`,
+    box:    `<path d="M3 8l9-5 9 5-9 5-9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>`
+  };
+
+  function waLink(number, message){
+    return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  }
+
+  /* ---------- Render the catalog from a data object ---------- */
+  function renderCatalog(data){
+    const number = data.whatsappNumber;
+    const generalLink = waLink(number, data.generalMessage || '');
+    const customBtn = document.getElementById('custom-wa-btn');
+    if (customBtn) customBtn.href = waLink(number, 'Hi! I have my own idea and want to get it built.');
+    document.getElementById('float-wa-btn').href = generalLink;
+
+    const grid = document.getElementById('catalog-grid');
+    grid.innerHTML = (data.products || []).map(p => `
+      <div class="card">
+        ${p.image ? `
+          <div class="card-img-wrap">
+            <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          </div>
+        ` : `
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">${ICONS[p.icon] || ICONS.box}</svg>
+          </div>
+        `}
+        <h3>${p.name}</h3>
+        <p class="desc">${p.desc}</p>
+        <p class="spec mono">${p.spec}</p>
+        <div class="card-footer">
+          <span class="price">${p.price}</span>
+          <a class="ask-btn" target="_blank" rel="noopener"
+             href="${waLink(number, `Hi! I'm interested in the ${p.name} (${p.price}). Is it in stock?`)}">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.85.5 3.58 1.36 5.06L2 22l5.2-1.46a9.89 9.89 0 0 0 4.84 1.24h.005c5.46 0 9.91-4.45 9.91-9.91C21.955 6.45 17.5 2 12.04 2zm0 18.13h-.004a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.09.87.83-3.02-.2-.31a8.18 8.18 0 0 1-1.26-4.4c0-4.53 3.69-8.22 8.23-8.22 2.2 0 4.26.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.82c0 4.53-3.7 8.22-8.24 8.22z"/></svg>
+            Ask about this
+          </a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderError(){
+    document.getElementById('catalog-grid').innerHTML =
+      `<p class="desc">Couldn't load the catalog. Open admin.html first to create your catalog data, then refresh this page.</p>`;
+  }
+
+  /* ---------- Load data: localStorage first, then fetch fallback ---------- */
+  function loadFromLocalStorage(){
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) { renderCatalog(JSON.parse(raw)); return true; }
+    } catch (e) {}
+    return false;
+  }
+
+  if (!loadFromLocalStorage()){
+    // No localStorage data yet — try fetching the JSON file as a fallback
+    fetch(DATA_URL, { cache: 'no-store' })
+      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+      .then(data => renderCatalog(data))
+      .catch(renderError);
+  }
+
+  /* ---------- Live sync: re-render when admin.html saves in another tab ---------- */
+  window.addEventListener('storage', e => {
+    if (e.key === DRAFT_KEY && e.newValue) {
+      try { renderCatalog(JSON.parse(e.newValue)); } catch (err) {}
+    }
+  });
+
+  /* ---------- Theme Toggle ---------- */
+  const themeBtn = document.getElementById('theme-toggle');
+  
+  function initTheme() {
+    const saved = localStorage.getItem('lnl_theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }
+
+  themeBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('lnl_theme', next);
+  });
+
+  initTheme();
+</script>
+
+</body>
+</html>
