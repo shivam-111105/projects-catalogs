@@ -14,8 +14,8 @@
       "id": "p94yrbpc",
       "name": "AQI Monitor(with Website + PPT)",
       "desc": "AQI monitor raw built on breadboard with clean, organized and reliable wiring setup. Along with website that could show the data from the hardware with a user friendly interface and the project PPT to showcase the project",
-      "spec": "",
-      "price": "",
+      "spec": "AQI MONITOR      ESP32     WEBSITE     PPT",
+      "price": "3500",
       "icon": "chip"
     }
   ]
