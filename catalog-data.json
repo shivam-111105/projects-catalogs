@@ -1,54 +1,22 @@
 {
-  "whatsappNumber": "919999999999",
-  "generalMessage": "Hi! I saw your Late Night Lab catalog and wanted to ask about your kits.",
+  "whatsappNumber": "918279950463",
+  "generalMessage": "Hi! I saw your catalog and wanted to ask about your kits.",
   "products": [
     {
-      "id": "p1",
-      "name": "ESP32 Starter Kit",
-      "desc": "ESP32 dev board, breadboard, jumper wires and a couple of sensors to get you from unboxing to blinking LED in one sitting.",
-      "spec": "ESP32-WROOM · Wi-Fi + BLE",
-      "price": "₹599",
+      "id": "pj3v7s21",
+      "name": "Air Quality Monitor",
+      "desc": "AQI monitor raw built on breadboard with clean, organized and reliable wiring setup. Easy to show case and will works when needed",
+      "spec": "AQI MONITOR      ESP32     ",
+      "price": "₹2500",
       "icon": "chip"
     },
     {
-      "id": "p2",
-      "name": "Line-Following Bot",
-      "desc": "Chassis, motors, IR sensors and driver board pre-wired — solder-free assembly, code included and explained.",
-      "spec": "2x DC motor · IR array",
-      "price": "₹849",
-      "icon": "robot"
-    },
-    {
-      "id": "p3",
-      "name": "Soldering Practice Kit",
-      "desc": "A forgiving PCB, extra components and a short guide — built for your first (or fiftieth) clean joint.",
-      "spec": "60/40 solder · 1x PCB",
-      "price": "₹299",
-      "icon": "iron"
-    },
-    {
-      "id": "p4",
-      "name": "Temp & Humidity Node",
-      "desc": "A small sensor node that logs readings to your laptop over serial — good base for a mini weather project.",
-      "spec": "DHT22 · USB-serial",
-      "price": "₹449",
-      "icon": "sensor"
-    },
-    {
-      "id": "p5",
-      "name": "LED Matrix Display",
-      "desc": "8x8 driven matrix with a starter library so you can scroll text or draw pixel art within the hour.",
-      "spec": "MAX7219 · 8x8 LEDs",
-      "price": "₹399",
-      "icon": "matrix"
-    },
-    {
-      "id": "p6",
-      "name": "Custom Build",
-      "desc": "Have something specific in mind? Tell me what you're trying to build and I'll quote parts and time.",
-      "spec": "scoped over chat",
-      "price": "varies",
-      "icon": "gear"
+      "id": "p94yrbpc",
+      "name": "AQI Monitor(with Website + PPT)",
+      "desc": "AQI monitor raw built on breadboard with clean, organized and reliable wiring setup. Along with website that could show the data from the hardware with a user friendly interface and the project PPT to showcase the project",
+      "spec": "",
+      "price": "",
+      "icon": "chip"
     }
   ]
 }
