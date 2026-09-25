@@ -1672,7 +1672,10 @@
   let searchQuery = '';
 
   function waLink(number, message){
-    const cleanNum = (number || '918279950463').replace(/[^0-9]/g, '');
+    let cleanNum = (number || '918279950463').replace(/[^0-9]/g, '');
+    if (!cleanNum || cleanNum.includes('9999999999') || cleanNum.length < 10) {
+      cleanNum = '918279950463';
+    }
     return `https://wa.me/${cleanNum}?text=${encodeURIComponent(message || '')}`;
   }
 
@@ -1722,7 +1725,12 @@
     if (!currentData) return;
 
     const data = currentData;
-    const number = data.whatsappNumber || '918279950463';
+    let number = data.whatsappNumber;
+    if (!number || number.includes('9999999999') || number.replace(/[^0-9]/g, '').length < 10) {
+      number = '918279950463';
+      data.whatsappNumber = number;
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch (e) {}
+    }
     const generalLink = waLink(number, data.generalMessage || 'Hi! I saw your Late Night Lab catalog and wanted to ask about your kits.');
     
     // Update static CTA buttons
@@ -1906,6 +1914,10 @@
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && Array.isArray(parsed.products)) {
+          if (!parsed.whatsappNumber || parsed.whatsappNumber.includes('9999999999') || parsed.whatsappNumber.length < 10) {
+            parsed.whatsappNumber = '918279950463';
+            try { localStorage.setItem(DRAFT_KEY, JSON.stringify(parsed)); } catch (err) {}
+          }
           renderCatalog(parsed);
           return true;
         }
@@ -1918,13 +1930,18 @@
     fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' })
       .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
       .then(data => {
+        if (!data.whatsappNumber || data.whatsappNumber.includes('9999999999')) {
+          data.whatsappNumber = '918279950463';
+        }
         // If localStorage has an active draft that is newer, respect it; otherwise use file
         const draft = localStorage.getItem(DRAFT_KEY);
         if (draft) {
           try {
             const p = JSON.parse(draft);
             if (p && p.products && p.products.length > 0) {
+              p.whatsappNumber = data.whatsappNumber || '918279950463';
               renderCatalog(p);
+              try { localStorage.setItem(DRAFT_KEY, JSON.stringify(p)); } catch (err) {}
               return;
             }
           } catch (e) {}
