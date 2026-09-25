@@ -862,6 +862,9 @@
   }
 
   function loadState(data, opts = {}){
+    if (!data.whatsappNumber || data.whatsappNumber.includes('9999999999') || data.whatsappNumber.length < 10) {
+      data.whatsappNumber = '918279950463';
+    }
     // Backwards-compatibility guarantee
     data.products = (data.products || []).map(p => ({
       id: p.id || uid(),
@@ -1179,6 +1182,10 @@
       try {
         const parsed = JSON.parse(draft);
         if (parsed && Array.isArray(parsed.products) && parsed.products.length > 0) {
+          if (!parsed.whatsappNumber || parsed.whatsappNumber.includes('9999999999')) {
+            parsed.whatsappNumber = '918279950463';
+            try { localStorage.setItem(DRAFT_KEY, JSON.stringify(parsed)); } catch (e) {}
+          }
           loadState(parsed, { silent: true });
           setStatus('draft active & synced', true);
           return;
