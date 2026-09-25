@@ -671,11 +671,11 @@
       <div class="grid-2">
         <div class="field-row">
           <label for="gh-owner">GitHub Username</label>
-          <input type="text" id="gh-owner" placeholder="e.g. shivam-111105" />
+          <input type="text" id="gh-owner" placeholder="e.g. your-github-username" />
         </div>
         <div class="field-row">
           <label for="gh-repo">Repository Name</label>
-          <input type="text" id="gh-repo" placeholder="e.g. projects-catalogs" />
+          <input type="text" id="gh-repo" placeholder="e.g. your-catalog-repo" />
         </div>
       </div>
       <div class="field-row">
@@ -692,7 +692,7 @@
     <div class="settings-card">
       <div class="field-row">
         <label for="wa-number">WhatsApp number (with country code, no +)</label>
-        <input type="text" id="wa-number" placeholder="919999999999" />
+        <input type="text" id="wa-number" placeholder="918279950463" />
       </div>
       <div class="field-row">
         <label for="wa-message">General message (used on the hero button)</label>
@@ -795,7 +795,7 @@
 
   function defaultData(){
     return {
-      whatsappNumber: "919999999999",
+      whatsappNumber: "918279950463",
       generalMessage: "Hi! I saw your Late Night Lab catalog and wanted to ask about your kits.",
       products: [
         { id: uid(), name: "", desc: "", spec: "", price: "", icon: "box", category: "Hardware & Tools", badge: "Handmade" }
@@ -1206,9 +1206,9 @@
   const ghRepoEl = document.getElementById('gh-repo');
   const ghTokenEl = document.getElementById('gh-token');
 
-  // Load from localStorage or prefill with known repo defaults
-  ghOwnerEl.value = localStorage.getItem('lnl_gh_owner') || 'shivam-111105';
-  ghRepoEl.value = localStorage.getItem('lnl_gh_repo') || 'projects-catalogs';
+  // Load from localStorage (stays securely in user's browser)
+  ghOwnerEl.value = localStorage.getItem('lnl_gh_owner') || '';
+  ghRepoEl.value = localStorage.getItem('lnl_gh_repo') || '';
   ghTokenEl.value = localStorage.getItem('lnl_gh_token') || '';
 
   ghOwnerEl.addEventListener('input', e => localStorage.setItem('lnl_gh_owner', e.target.value));
