@@ -3,206 +3,443 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catalog admin — Late Night Lab</title>
+<title>Catalog Admin — Late Night Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg: #FAFAF8;
-    --ink: #14181C;
-    --ink-soft: #565D64;
-    --accent: #2A5FE0;
-    --accent-soft: #E9EFFD;
-    --line: #E2E2DB;
-    --card: #FFFFFF;
-    --danger: #C43D3D;
-    --danger-soft: #FBEAEA;
-    --ok: #1D8F5E;
-    --ok-soft: #E8F7EF;
+  /* ==========================================================================
+     APPLE MONOCHROMATIC ADMIN DESIGN SYSTEM & GLASSMORPHISM
+     ========================================================================== */
+  :root {
+    --canvas: #F5F5F7;
+    --canvas-subtle: #EBEBED;
+    --ink: #1D1D1F;
+    --ink-secondary: #6E6E73;
+    --ink-tertiary: #86868B;
+    --line: rgba(0, 0, 0, 0.08);
+    --line-subtle: rgba(0, 0, 0, 0.04);
+    
+    /* True Apple Frosted Glass (Light) */
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-card: rgba(255, 255, 255, 0.82);
+    --glass-card-hover: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+    --header-glass: rgba(245, 245, 247, 0.82);
+    --bar-glass: rgba(245, 245, 247, 0.9);
+    
+    /* Accents */
+    --accent: #000000;
+    --accent-contrast: #FFFFFF;
+    --badge-bg: rgba(0, 0, 0, 0.06);
+    --badge-ink: #1D1D1F;
+    --danger: #E11D48;
+    --danger-soft: rgba(225, 29, 72, 0.1);
+    --ok: #10B981;
+    --ok-soft: rgba(16, 185, 129, 0.12);
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.07), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.12);
+    
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-pill: 9999px;
   }
 
-  * { box-sizing: border-box; }
+  [data-theme="dark"] {
+    --canvas: #000000;
+    --canvas-subtle: #0B0B0D;
+    --ink: #F5F5F7;
+    --ink-secondary: #A1A1A6;
+    --ink-tertiary: #6E6E73;
+    --line: rgba(255, 255, 255, 0.1);
+    --line-subtle: rgba(255, 255, 255, 0.05);
+    
+    /* True Apple Frosted Glass (Dark OLED) */
+    --glass-bg: rgba(20, 20, 24, 0.7);
+    --glass-card: rgba(26, 26, 30, 0.7);
+    --glass-card-hover: rgba(34, 34, 40, 0.88);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+    --header-glass: rgba(0, 0, 0, 0.82);
+    --bar-glass: rgba(10, 10, 12, 0.92);
+    
+    --accent: #FFFFFF;
+    --accent-contrast: #000000;
+    --badge-bg: rgba(255, 255, 255, 0.1);
+    --badge-ink: #F5F5F7;
+    --danger: #FB7185;
+    --danger-soft: rgba(251, 113, 133, 0.15);
+    --ok: #34D399;
+    --ok-soft: rgba(52, 211, 153, 0.15);
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 30px -4px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 24px 48px -8px rgba(0, 0, 0, 0.8);
+  }
 
-  body{
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
     margin: 0;
-    background: var(--bg);
+    background-color: var(--canvas);
+    background-image: radial-gradient(var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
     color: var(--ink);
-    font-family: 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  h1, h2 { font-family: 'Archivo', sans-serif; margin: 0; }
+  h1, h2, h3 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
 
-  .mono{ font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
+  .mono {
+    font-family: "SF Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+  }
 
-  .wrap{ max-width: 860px; margin: 0 auto; padding: 40px 24px 100px; }
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 36px 24px 120px;
+  }
 
-  header{
+  /* Header */
+  header {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 16px;
     border-bottom: 1px solid var(--line);
-    padding-bottom: 22px;
+    padding-bottom: 24px;
     margin-bottom: 28px;
   }
 
-  header h1{ font-size: 1.5rem; letter-spacing: -0.01em; }
-  header p{ margin: 4px 0 0; color: var(--ink-soft); font-size: 0.92rem; }
-
-  .status{
-    font-size: 0.82rem;
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    white-space: nowrap;
-  }
-  .status.saved{ background: var(--ok-soft); color: var(--ok); }
-
-  section{ margin-bottom: 36px; }
-
-  section > h2{
-    font-size: 1.05rem;
-    margin-bottom: 4px;
-  }
-
-  section > .hint{
-    color: var(--ink-soft);
-    font-size: 0.86rem;
-    margin: 0 0 16px;
-  }
-
-  label{
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--ink-soft);
-    margin-bottom: 5px;
-  }
-
-  input[type="text"], input[type="password"], textarea, select{
-    width: 100%;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    padding: 9px 11px;
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    background: #fff;
-    color: var(--ink);
-  }
-
-  input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus{
-    outline: 2px solid var(--accent);
-    outline-offset: 1px;
-    border-color: var(--accent);
-  }
-  
-  select:disabled { background: var(--bg); opacity: 0.6; cursor: not-allowed; }
-
-  textarea{ resize: vertical; min-height: 54px; font-family: 'Inter', sans-serif; }
-
-  .settings-card{
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 20px;
-    display: grid;
-    gap: 16px;
-  }
-
-  .field-row{ display: grid; gap: 6px; }
-
-  .product-card{
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-
-  .product-head{
+  header h1 {
+    font-size: 1.8rem;
+    letter-spacing: -0.03em;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
+    gap: 10px;
   }
 
-  .product-head .index{
-    font-size: 0.78rem;
-    color: var(--ink-soft);
+  header p {
+    margin: 6px 0 0;
+    color: var(--ink-secondary);
+    font-size: 0.94rem;
+    line-height: 1.5;
+    max-width: 60ch;
   }
 
-  .row-actions{ display: flex; gap: 6px; }
+  .header-badges {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
 
-  .icon-btn{
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
+  .status {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--badge-bg);
+    color: var(--ink);
     border: 1px solid var(--line);
-    background: #fff;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink-tertiary);
+  }
+
+  .status.saved {
+    background: var(--ok-soft);
+    color: var(--ok);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+  .status.saved .dot { background: var(--ok); }
+
+  .theme-btn {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--shadow-sm);
+    color: var(--ink);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-pill);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: var(--ink-soft);
+    transition: all 0.2s ease;
   }
-  .icon-btn:hover{ background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
-  .icon-btn.danger:hover{ background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
-  .icon-btn svg{ width: 15px; height: 15px; }
-  .icon-btn:disabled{ opacity: 0.35; cursor: not-allowed; }
-  .icon-btn:disabled:hover{ background: #fff; color: var(--ink-soft); border-color: var(--line); }
+  .theme-btn:hover { transform: scale(1.05); }
+  .theme-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .theme-btn .moon-icon { display: none; }
+  [data-theme="dark"] .theme-btn .sun-icon { display: none; }
+  [data-theme="dark"] .theme-btn .moon-icon { display: block; }
 
-  .grid-2{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .grid-3{ display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
-
-  @media (max-width: 620px){
-    .grid-2, .grid-3{ grid-template-columns: 1fr; }
+  /* Metrics Bento Bar (Upgrade) */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
   }
 
-  .icon-preview{
+  .metric-card {
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--shadow-sm);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .metric-label {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--ink-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .metric-val {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .metric-sub {
+    font-size: 0.78rem;
+    color: var(--ink-secondary);
+  }
+
+  /* Note Box */
+  .note-box {
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--shadow-sm);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    font-size: 0.88rem;
+    color: var(--ink-secondary);
+    line-height: 1.55;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .note-box strong { color: var(--ink); }
+  .note-box code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--badge-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--ink);
+    border: 1px solid var(--line-subtle);
+  }
+
+  section { margin-bottom: 38px; }
+
+  section > h2 {
+    font-size: 1.18rem;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+
+  section > .hint {
+    color: var(--ink-secondary);
+    font-size: 0.88rem;
+    margin: 0 0 16px;
+  }
+
+  /* Settings Card (Glassmorphism) */
+  .settings-card {
+    background: var(--glass-card);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--shadow-md);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: grid;
+    gap: 18px;
+  }
+
+  label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    margin-bottom: 6px;
+  }
+
+  input[type="text"], input[type="password"], textarea, select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.92rem;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--canvas-subtle);
+    color: var(--ink);
+    transition: all 0.2s ease;
+  }
+
+  input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--ink);
+    background: var(--canvas);
+    box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.15);
+  }
+
+  select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  textarea { resize: vertical; min-height: 60px; }
+
+  .field-row { display: grid; gap: 6px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1.8fr 1.1fr 1.1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+
+  @media (max-width: 680px) {
+    .grid-2, .grid-3, .grid-4, .metrics-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Product Cards */
+  .product-card {
+    background: var(--glass-card);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--shadow-md);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    margin-bottom: 18px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .product-card:hover {
+    box-shadow: var(--shadow-lg);
+    background: var(--glass-card-hover);
+  }
+
+  .product-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .product-head .index {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .row-actions { display: flex; gap: 6px; }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: var(--glass-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--ink-secondary);
+    transition: all 0.15s ease;
+  }
+  .icon-btn:hover { background: var(--badge-bg); color: var(--ink); border-color: var(--ink); }
+  .icon-btn.danger:hover { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
+  .icon-btn svg { width: 15px; height: 15px; }
+  .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .icon-preview {
     display: flex;
     align-items: center;
     gap: 12px;
   }
-  .icon-preview .swatch{
-    width: 44px; height: 44px;
-    border-radius: 7px;
-    background: var(--accent-soft);
-    display: flex; align-items: center; justify-content: center;
+
+  .icon-preview .swatch {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    background: var(--badge-bg);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    color: var(--ink);
   }
-  .icon-preview .swatch svg{ width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-preview .swatch svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; }
   .icon-preview .swatch.hidden { display: none; }
-  
+
   .img-preview {
-    width: 60px; height: 44px;
-    border-radius: 6px;
-    background: var(--line);
+    width: 64px;
+    height: 46px;
+    border-radius: 8px;
+    background: var(--canvas-subtle);
     object-fit: cover;
     display: none;
     border: 1px solid var(--line);
+    flex-shrink: 0;
   }
   .img-preview.active { display: block; }
-  
+
   .upload-label {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
+    padding: 7px 13px;
     border: 1px solid var(--line);
-    border-radius: 6px;
-    font-size: 0.8rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
     cursor: pointer;
-    background: #fff;
-    color: var(--ink-soft);
+    background: var(--canvas-subtle);
+    color: var(--ink);
     white-space: nowrap;
+    transition: all 0.2s ease;
   }
-  .upload-label:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .upload-label:hover { background: var(--canvas); border-color: var(--ink); }
+
   .remove-img-btn {
     font-size: 0.8rem;
+    font-weight: 600;
     color: var(--danger);
     background: none;
     border: none;
@@ -211,72 +448,159 @@
     display: none;
     padding: 0;
   }
-  .remove-img-btn:hover { color: #A03030; }
   .remove-img-btn.active { display: inline-block; }
 
-  .add-btn{
+  .add-btn {
     width: 100%;
-    padding: 13px;
-    border: 1px dashed #C7CAC2;
-    border-radius: 10px;
-    background: transparent;
-    color: var(--ink-soft);
-    font-size: 0.92rem;
+    padding: 14px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-md);
+    background: var(--glass-card);
+    backdrop-filter: blur(12px);
+    color: var(--ink);
+    font-size: 0.94rem;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .add-btn:hover{ border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .add-btn:hover {
+    border-color: var(--ink);
+    background: var(--glass-card-hover);
+    transform: translateY(-1px);
+  }
 
-  .action-bar{
+  /* Sticky Frosted Action Bar */
+  .action-bar {
     position: sticky;
-    bottom: 0;
-    background: rgba(250,250,248,0.92);
-    backdrop-filter: blur(6px);
-    border-top: 1px solid var(--line);
-    padding: 16px 0;
-    margin-top: 20px;
+    bottom: 16px;
+    background: var(--bar-glass);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--shadow-lg);
+    border-radius: var(--radius-pill);
+    padding: 12px 20px;
+    margin-top: 32px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    z-index: 50;
+  }
+
+  .action-bar-left, .action-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
-  .btn{
+  .btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 11px 18px;
-    border-radius: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     border: 1px solid var(--line);
-    background: #fff;
+    background: var(--glass-card);
     color: var(--ink);
     cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover {
+    background: var(--glass-card-hover);
+    border-color: var(--ink);
+    transform: translateY(-1px);
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--canvas);
+    border-color: var(--ink);
+  }
+  .btn-primary:hover {
+    opacity: 0.92;
+    background: var(--ink);
+    color: var(--canvas);
   }
 
-  .btn-primary{ background: var(--ink); color: #fff; border-color: var(--ink); }
-  .btn-primary:hover{ opacity: 0.9; }
+  .btn svg { width: 15px; height: 15px; }
 
-  .btn:hover{ border-color: #C7CAC2; }
+  .file-input { display: none; }
 
-  .btn svg{ width: 15px; height: 15px; }
-
-  .file-input{ display: none; }
-
-  .note-box{
-    background: var(--accent-soft);
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-size: 0.86rem;
-    color: var(--ink);
-    line-height: 1.55;
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
   }
-  .note-box code{
-    font-family: 'IBM Plex Mono', monospace;
-    background: rgba(255,255,255,0.7);
-    padding: 1px 5px;
-    border-radius: 4px;
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Store Preview Modal (New Upgrade) */
+  .preview-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .preview-modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .preview-modal-box {
+    width: 100%;
+    max-width: 1120px;
+    height: 88vh;
+    background: var(--canvas);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .preview-modal-bar {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--glass-card);
+    backdrop-filter: blur(16px);
+  }
+
+  .preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: var(--canvas);
   }
 </style>
 </head>
@@ -285,16 +609,61 @@
 <div class="wrap">
   <header>
     <div>
-      <h1>Catalog admin</h1>
-      <p>Edit your products and WhatsApp details here, then download the file below and upload it to replace <span class="mono">catalog-data.json</span> on your site. Nothing else needs to change.</p>
+      <h1>
+        Catalog admin
+      </h1>
+      <p>Edit your products, tags, and WhatsApp details here. All edits sync in real-time to your live user site and stay saved in your browser.</p>
     </div>
-    <span class="status" id="save-status">draft loaded</span>
+    
+    <div class="header-badges">
+      <span class="status" id="save-status">
+        <span class="dot"></span>
+        <span>draft loaded</span>
+      </span>
+
+      <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+        <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+
+      <a href="index.html" target="_blank" class="btn" style="padding: 7px 15px; font-size: 0.82rem;">
+        Open Store ↗
+      </a>
+    </div>
   </header>
 
-  <div class="note-box" id="load-note">
-    Trying to load your current <code>catalog-data.json</code>... if this page isn't sitting next to that file (or you're opening it straight from your computer), use <strong>Load a catalog-data.json file</strong> below instead.
+  <!-- Metrics Bento Bar (Upgrade) -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="metric-label">Total Kits</span>
+      <span class="metric-val" id="metric-total">0</span>
+      <span class="metric-sub">Listed in catalog</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">Custom Photos</span>
+      <span class="metric-val" id="metric-images">0</span>
+      <span class="metric-sub">Uploaded photos</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">Price Range</span>
+      <span class="metric-val" id="metric-price-range">₹0</span>
+      <span class="metric-sub">Min to max</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">Real-Time Sync</span>
+      <span class="metric-val" style="font-size:1.15rem; color:var(--ok);" id="sync-status-indicator">● Active</span>
+      <span class="metric-sub">Broadcasting to index</span>
+    </div>
   </div>
 
+  <div class="note-box" id="load-note">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <div>
+      Loaded from <code>catalog-data.json</code> with real-time browser storage backup. Edits update <strong>index.html</strong> immediately across tabs! Use <strong>Save & Publish to Live Site</strong> to push to GitHub / Vercel.
+    </div>
+  </div>
+
+  <!-- GitHub Auto-Deploy -->
   <section>
     <h2>GitHub Auto-Deploy</h2>
     <p class="hint">Enter your GitHub details below. Your token stays securely in this browser.</p>
@@ -302,11 +671,11 @@
       <div class="grid-2">
         <div class="field-row">
           <label for="gh-owner">GitHub Username</label>
-          <input type="text" id="gh-owner" placeholder="e.g. yourusername" />
+          <input type="text" id="gh-owner" placeholder="e.g. shivam-111105" />
         </div>
         <div class="field-row">
           <label for="gh-repo">Repository Name</label>
-          <input type="text" id="gh-repo" placeholder="e.g. my-catalog-site" />
+          <input type="text" id="gh-repo" placeholder="e.g. projects-catalogs" />
         </div>
       </div>
       <div class="field-row">
@@ -316,12 +685,13 @@
     </div>
   </section>
 
+  <!-- Contact settings -->
   <section>
     <h2>Contact settings</h2>
     <p class="hint">Used to build every WhatsApp link on the site.</p>
     <div class="settings-card">
       <div class="field-row">
-        <label for="wa-number">WhatsApp number</label>
+        <label for="wa-number">WhatsApp number (with country code, no +)</label>
         <input type="text" id="wa-number" placeholder="919999999999" />
       </div>
       <div class="field-row">
@@ -331,26 +701,62 @@
     </div>
   </section>
 
+  <!-- Products Section -->
   <section>
     <h2>Products</h2>
     <p class="hint">Add, edit, reorder or remove kits. You can upload an image or choose an SVG icon. Images are auto-compressed.</p>
+    
     <div id="product-list"></div>
     <button class="add-btn" id="add-product">+ Add a product</button>
   </section>
 
+  <!-- Floating Sticky Action Bar -->
   <div class="action-bar">
-    <button class="btn btn-primary" id="publish-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
-      Save & Publish to Live Site
-    </button>
-    <button class="btn" id="download-btn">
-      Download Backup
-    </button>
-    <button class="btn" id="load-btn">Load a file</button>
-    <input type="file" id="file-input" class="file-input" accept="application/json" />
-    <button class="btn" id="reset-btn">Reset to last saved</button>
+    <div class="action-bar-left">
+      <button class="btn btn-primary" id="publish-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Save & Publish to Live Site
+      </button>
+      <button class="btn" id="preview-store-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Live Preview
+      </button>
+      <button class="btn" id="copy-json-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy JSON
+      </button>
+    </div>
+
+    <div class="action-bar-right">
+      <button class="btn" id="download-btn">
+        Download Backup
+      </button>
+      <button class="btn" id="load-btn">Load a file</button>
+      <input type="file" id="file-input" class="file-input" accept="application/json" />
+      <button class="btn" id="reset-btn">Reset to last saved</button>
+    </div>
   </div>
 </div>
+
+<!-- Live Store Preview Modal (New Upgrade) -->
+<div class="preview-modal-overlay" id="preview-modal">
+  <div class="preview-modal-box">
+    <div class="preview-modal-bar">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-weight:700; font-size:1.05rem;">Live User Site Preview</span>
+        <span class="status saved" style="font-size:0.75rem; padding:3px 10px;">Real-Time Sync Active</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <a href="index.html" target="_blank" class="btn" style="padding:6px 14px; font-size:0.8rem;">Open in new tab ↗</a>
+        <button class="icon-btn" id="close-preview-btn" style="border-radius:50%;">✕</button>
+      </div>
+    </div>
+    <iframe class="preview-iframe" id="preview-frame" src="index.html"></iframe>
+  </div>
+</div>
+
+<!-- Apple Pill Toast -->
+<div class="toast" id="admin-toast">Notification</div>
 
 <script>
   const ICONS = {
@@ -364,7 +770,11 @@
   };
   const ICON_LABELS = { chip: 'Microchip', robot: 'Robot / bot', iron: 'Soldering iron', sensor: 'Sensor', matrix: 'LED matrix', gear: 'Gear / custom', box: 'Generic box' };
 
+  const CATEGORIES = ['IoT & Wi-Fi', 'Robotics', 'Hardware & Tools', 'IoT & Sensors', 'Displays', 'Custom'];
+  const BADGES = ['Popular', 'Best Seller', 'Essential', 'Hand-built', 'Interactive', 'Made to Order', 'New', 'In Stock'];
+
   const DRAFT_KEY = 'lnl_catalog_draft';
+  const SYNC_CHANNEL = 'lnl_catalog_sync';
   let state = null;
   let lastSaved = null;
 
@@ -373,27 +783,103 @@
   const noteEl = document.getElementById('load-note');
   const waNumberEl = document.getElementById('wa-number');
   const waMessageEl = document.getElementById('wa-message');
+  const previewFrame = document.getElementById('preview-frame');
+
+  // Broadcast Channel for instantaneous cross-tab sync
+  let broadcastChannel = null;
+  if ('BroadcastChannel' in window) {
+    broadcastChannel = new BroadcastChannel(SYNC_CHANNEL);
+  }
 
   function uid(){ return 'p' + Math.random().toString(36).slice(2, 9); }
 
   function defaultData(){
     return {
       whatsappNumber: "919999999999",
-      generalMessage: "Hi! I saw your catalog and wanted to ask about your kits.",
-      products: [{ id: uid(), name: "", desc: "", spec: "", price: "", icon: "box" }]
+      generalMessage: "Hi! I saw your Late Night Lab catalog and wanted to ask about your kits.",
+      products: [
+        { id: uid(), name: "", desc: "", spec: "", price: "", icon: "box", category: "Hardware & Tools", badge: "Handmade" }
+      ]
     };
   }
 
+  function showToast(msg) {
+    const toast = document.getElementById('admin-toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(window.__adminToastTimer);
+    window.__adminToastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+
   function setStatus(text, saved){
-    statusEl.textContent = text;
+    statusEl.innerHTML = `<span class="dot"></span><span>${escapeHtml(text)}</span>`;
     statusEl.classList.toggle('saved', !!saved);
   }
 
+  function updateMetrics() {
+    if (!state || !state.products) return;
+    document.getElementById('metric-total').textContent = state.products.length;
+    
+    const imgCount = state.products.filter(p => !!p.image).length;
+    document.getElementById('metric-images').textContent = imgCount;
+
+    // Price range calculation
+    const prices = state.products
+      .map(p => parseInt((p.price || '').replace(/[^0-9]/g, ''), 10))
+      .filter(n => !isNaN(n));
+    if (prices.length > 0) {
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      document.getElementById('metric-price-range').textContent = min === max ? `₹${min}` : `₹${min} - ₹${max}`;
+    } else {
+      document.getElementById('metric-price-range').textContent = '—';
+    }
+  }
+
+  function broadcastUpdate() {
+    if (!state) return;
+    // 1. BroadcastChannel to user tabs
+    if (broadcastChannel) {
+      try { broadcastChannel.postMessage(state); } catch (e) {}
+    }
+    // 2. PostMessage to live preview iframe
+    if (previewFrame && previewFrame.contentWindow) {
+      try {
+        previewFrame.contentWindow.postMessage({ type: 'CATALOG_UPDATE', payload: state }, '*');
+      } catch (e) {}
+    }
+  }
+
+  function persistDraft(){
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(state));
+      broadcastUpdate();
+      updateMetrics();
+    } catch (e) {
+      console.warn('localStorage full or restricted', e);
+      showToast('⚠️ Storage limit reached: consider removing large images.');
+    }
+  }
+
   function loadState(data, opts = {}){
+    // Backwards-compatibility guarantee
+    data.products = (data.products || []).map(p => ({
+      id: p.id || uid(),
+      name: p.name || '',
+      desc: p.desc || '',
+      spec: p.spec || '',
+      price: p.price || '',
+      icon: p.icon || 'box',
+      category: p.category || 'Hardware & Tools',
+      badge: p.badge || 'Handmade',
+      image: p.image || null
+    }));
+
     state = data;
     lastSaved = JSON.parse(JSON.stringify(data));
     render();
-    if (!opts.silent) noteEl.style.display = 'none';
+    persistDraft();
+    if (!opts.silent && noteEl) noteEl.style.display = 'flex';
   }
 
   function render(){
@@ -406,26 +892,29 @@
       card.className = 'product-card';
       card.innerHTML = `
         <div class="product-head">
-          <span class="index mono">Product ${i + 1}</span>
+          <span class="index mono">
+            <span style="font-weight:700;">#${i + 1}</span> ${escapeHtml(p.name || 'Untitled Kit')}
+          </span>
           <div class="row-actions">
-            <button class="icon-btn" data-action="up" data-id="${p.id}" ${i === 0 ? 'disabled' : ''} aria-label="Move up">
+            <button class="icon-btn" data-action="up" data-id="${p.id}" ${i === 0 ? 'disabled' : ''} aria-label="Move up" title="Move Up">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
             </button>
-            <button class="icon-btn" data-action="down" data-id="${p.id}" ${i === state.products.length - 1 ? 'disabled' : ''} aria-label="Move down">
+            <button class="icon-btn" data-action="down" data-id="${p.id}" ${i === state.products.length - 1 ? 'disabled' : ''} aria-label="Move down" title="Move Down">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
             </button>
-            <button class="icon-btn danger" data-action="delete" data-id="${p.id}" aria-label="Delete">
+            <button class="icon-btn danger" data-action="delete" data-id="${p.id}" aria-label="Delete" title="Delete Product">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
             </button>
           </div>
         </div>
+
         <div class="grid-2" style="margin-bottom:14px;">
           <div class="field-row">
             <label>Name</label>
             <input type="text" data-field="name" data-id="${p.id}" value="${escapeAttr(p.name)}" placeholder="e.g. ESP32 Starter Kit" />
           </div>
           <div class="field-row">
-            <label>Visual (Icon or Image)</label>
+            <label>Visual (Icon or Upload Photo)</label>
             <div class="icon-preview">
               <div class="swatch ${p.image ? 'hidden' : ''}"><svg viewBox="0 0 24 24">${ICONS[p.icon] || ICONS.box}</svg></div>
               <img src="${p.image || ''}" class="img-preview ${p.image ? 'active' : ''}" />
@@ -446,11 +935,13 @@
             </div>
           </div>
         </div>
+
         <div class="field-row" style="margin-bottom:14px;">
           <label>Description</label>
           <textarea data-field="desc" data-id="${p.id}" placeholder="One or two sentences about the kit.">${escapeHtml(p.desc)}</textarea>
         </div>
-        <div class="grid-3">
+
+        <div class="grid-4" style="margin-bottom:8px;">
           <div class="field-row">
             <label>Spec line</label>
             <input type="text" data-field="spec" data-id="${p.id}" value="${escapeAttr(p.spec)}" placeholder="e.g. ESP32-WROOM · Wi-Fi" />
@@ -459,29 +950,51 @@
             <label>Price</label>
             <input type="text" data-field="price" data-id="${p.id}" value="${escapeAttr(p.price)}" placeholder="₹599" />
           </div>
+          <div class="field-row">
+            <label>Category Filter</label>
+            <input type="text" list="category-datalist" data-field="category" data-id="${p.id}" value="${escapeAttr(p.category || 'Hardware & Tools')}" placeholder="Category" />
+          </div>
+          <div class="field-row">
+            <label>Card Badge</label>
+            <input type="text" list="badge-datalist" data-field="badge" data-id="${p.id}" value="${escapeAttr(p.badge || 'Handmade')}" placeholder="Badge" />
+          </div>
         </div>
       `;
       listEl.appendChild(card);
     });
 
-    setStatus('unsaved changes', false);
-    persistDraft();
+    updateMetrics();
   }
 
   function escapeHtml(s){ return (s || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
   function escapeAttr(s){ return escapeHtml(s).replace(/"/g, '&quot;'); }
 
-  function persistDraft(){
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); } catch (e) {}
-  }
+  // ----- Datalists for categories & badges -----
+  const catList = document.createElement('datalist');
+  catList.id = 'category-datalist';
+  catList.innerHTML = CATEGORIES.map(c => `<option value="${c}"></option>`).join('');
+  document.body.appendChild(catList);
 
-  // ----- events -----
+  const badgeList = document.createElement('datalist');
+  badgeList.id = 'badge-datalist';
+  badgeList.innerHTML = BADGES.map(b => `<option value="${b}"></option>`).join('');
+  document.body.appendChild(badgeList);
 
-  waNumberEl.addEventListener('input', e => { state.whatsappNumber = e.target.value; persistDraft(); setStatus('unsaved changes', false); });
-  waMessageEl.addEventListener('input', e => { state.generalMessage = e.target.value; persistDraft(); setStatus('unsaved changes', false); });
+  // ----- Events -----
+
+  waNumberEl.addEventListener('input', e => {
+    state.whatsappNumber = e.target.value;
+    persistDraft();
+    setStatus('unsaved changes', false);
+  });
+
+  waMessageEl.addEventListener('input', e => {
+    state.generalMessage = e.target.value;
+    persistDraft();
+    setStatus('unsaved changes', false);
+  });
 
   listEl.addEventListener('change', e => {
-    // Handle image upload with auto-resize logic
     if (e.target.dataset.action === 'upload') {
       const id = e.target.dataset.id;
       const file = e.target.files[0];
@@ -493,16 +1006,22 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const maxW = 800; // Resize to max 800px width
+          const maxW = 640; // High efficiency 640px max width for retina & fast localStorage
           let w = img.width, h = img.height;
           if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
           canvas.width = w; canvas.height = h;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, w, h);
-          const base64 = canvas.toDataURL('image/jpeg', 0.85); // Compress to 85% JPEG
+          const base64 = canvas.toDataURL('image/jpeg', 0.8);
           
           const p = state.products.find(x => x.id === id);
-          if (p) { p.image = base64; persistDraft(); setStatus('unsaved changes', false); render(); }
+          if (p) {
+            p.image = base64;
+            persistDraft();
+            setStatus('unsaved changes', false);
+            render();
+            showToast('✓ Photo compressed & attached');
+          }
         };
         img.src = ev.target.result;
       };
@@ -527,7 +1046,13 @@
     if (e.target.dataset.action === 'remove-img') {
       const id = e.target.dataset.id;
       const p = state.products.find(x => x.id === id);
-      if (p) { delete p.image; persistDraft(); setStatus('unsaved changes', false); render(); }
+      if (p) {
+        delete p.image;
+        persistDraft();
+        setStatus('unsaved changes', false);
+        render();
+        showToast('Image removed');
+      }
       return;
     }
 
@@ -538,18 +1063,44 @@
     if (idx === -1) return;
     const action = btn.dataset.action;
     if (action === 'delete'){
-      state.products.splice(idx, 1);
+      if (confirm(`Delete "${state.products[idx].name || 'this kit'}"?`)) {
+        state.products.splice(idx, 1);
+        render();
+        persistDraft();
+        setStatus('unsaved changes', false);
+        showToast('Product removed');
+      }
     } else if (action === 'up' && idx > 0){
       [state.products[idx - 1], state.products[idx]] = [state.products[idx], state.products[idx - 1]];
+      render();
+      persistDraft();
+      setStatus('unsaved changes', false);
     } else if (action === 'down' && idx < state.products.length - 1){
       [state.products[idx + 1], state.products[idx]] = [state.products[idx], state.products[idx + 1]];
+      render();
+      persistDraft();
+      setStatus('unsaved changes', false);
     }
-    render();
   });
 
   document.getElementById('add-product').addEventListener('click', () => {
-    state.products.push({ id: uid(), name: '', desc: '', spec: '', price: '', icon: 'box' });
+    state.products.push({
+      id: uid(),
+      name: '',
+      desc: '',
+      spec: '',
+      price: '',
+      icon: 'box',
+      category: 'Hardware & Tools',
+      badge: 'New Kit'
+    });
     render();
+    persistDraft();
+    setStatus('unsaved changes', false);
+    showToast('+ Added new product');
+    
+    // Smooth scroll to the newly added product
+    window.scrollTo({ top: document.body.scrollHeight - 200, behavior: 'smooth' });
   });
 
   document.getElementById('download-btn').addEventListener('click', () => {
@@ -561,11 +1112,22 @@
     a.click();
     URL.revokeObjectURL(url);
     lastSaved = JSON.parse(JSON.stringify(state));
-    setStatus('downloaded', true);
+    setStatus('downloaded backup', true);
+    showToast('✓ catalog-data.json downloaded');
+  });
+
+  document.getElementById('copy-json-btn').addEventListener('click', () => {
+    if (!state) return;
+    navigator.clipboard.writeText(JSON.stringify(state, null, 2))
+      .then(() => showToast('✓ Catalog JSON copied to clipboard!'))
+      .catch(() => showToast('Unable to copy to clipboard'));
   });
 
   document.getElementById('reset-btn').addEventListener('click', () => {
-    if (confirm('Discard changes since your last download?')) loadState(lastSaved);
+    if (confirm('Discard changes since your last download or save?')) {
+      loadState(lastSaved);
+      showToast('Reset to last saved version');
+    }
   });
 
   document.getElementById('load-btn').addEventListener('click', () => {
@@ -582,42 +1144,71 @@
         data.products = (data.products || []).map(p => ({ ...p, id: p.id || uid() }));
         loadState(data);
         setStatus('file loaded', true);
+        showToast('✓ Loaded file successfully');
       } catch (err) {
-        alert("That file doesn't look like valid catalog-data.json.");
+        alert("That file does not look like valid catalog-data.json.");
       }
     };
     reader.readAsText(file);
   });
 
-  // ----- startup: try fetch, else draft, else defaults -----
+  /* ---------- Live Store Preview Modal ---------- */
+  const previewModal = document.getElementById('preview-modal');
+  const previewStoreBtn = document.getElementById('preview-store-btn');
+  const closePreviewBtn = document.getElementById('close-preview-btn');
 
-  fetch('catalog-data.json', { cache: 'no-store' })
-    .then(res => { if (!res.ok) throw new Error(); return res.json(); })
-    .then(data => {
-      data.products = (data.products || []).map(p => ({ ...p, id: p.id || uid() }));
-      loadState(data);
-      setStatus('loaded from site', true);
-    })
-    .catch(() => {
-      const draft = localStorage.getItem(DRAFT_KEY);
-      if (draft){
-        try {
-          loadState(JSON.parse(draft), { silent: true });
-          setStatus('restored draft', false);
+  previewStoreBtn.addEventListener('click', () => {
+    previewModal.classList.add('open');
+    if (previewFrame.contentWindow) {
+      previewFrame.contentWindow.location.reload();
+    }
+  });
+
+  closePreviewBtn.addEventListener('click', () => {
+    previewModal.classList.remove('open');
+  });
+
+  previewModal.addEventListener('click', (e) => {
+    if (e.target === previewModal) previewModal.classList.remove('open');
+  });
+
+  /* ---------- Startup: Draft Priority & Fetch Fallback ---------- */
+  function bootCatalog() {
+    const draft = localStorage.getItem(DRAFT_KEY);
+    if (draft) {
+      try {
+        const parsed = JSON.parse(draft);
+        if (parsed && Array.isArray(parsed.products) && parsed.products.length > 0) {
+          loadState(parsed, { silent: true });
+          setStatus('draft active & synced', true);
           return;
-        } catch (e) {}
-      }
-      loadState(defaultData(), { silent: true });
-      setStatus('starting blank', false);
-    });
+        }
+      } catch (e) {}
+    }
 
-  // ----- github sync -----
+    fetch('catalog-data.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(res => { if (!res.ok) throw new Error(); return res.json(); })
+      .then(data => {
+        data.products = (data.products || []).map(p => ({ ...p, id: p.id || uid() }));
+        loadState(data);
+        setStatus('loaded from site', true);
+      })
+      .catch(() => {
+        loadState(defaultData(), { silent: true });
+        setStatus('starting fresh', false);
+      });
+  }
+
+  bootCatalog();
+
+  /* ---------- GitHub Auto-Deploy Sync ---------- */
   const ghOwnerEl = document.getElementById('gh-owner');
   const ghRepoEl = document.getElementById('gh-repo');
   const ghTokenEl = document.getElementById('gh-token');
 
-  ghOwnerEl.value = localStorage.getItem('lnl_gh_owner') || '';
-  ghRepoEl.value = localStorage.getItem('lnl_gh_repo') || '';
+  // Load from localStorage or prefill with known repo defaults
+  ghOwnerEl.value = localStorage.getItem('lnl_gh_owner') || 'shivam-111105';
+  ghRepoEl.value = localStorage.getItem('lnl_gh_repo') || 'projects-catalogs';
   ghTokenEl.value = localStorage.getItem('lnl_gh_token') || '';
 
   ghOwnerEl.addEventListener('input', e => localStorage.setItem('lnl_gh_owner', e.target.value));
@@ -629,13 +1220,16 @@
     const repo = ghRepoEl.value.trim();
     const token = ghTokenEl.value.trim();
     if (!owner || !repo || !token) {
-      alert('Please fill out all GitHub Settings to publish.');
+      alert('Please fill out all GitHub Settings (Username, Repository, and Token) to publish.');
       return;
     }
 
     const btn = document.getElementById('publish-btn');
     const originalText = btn.innerHTML;
-    btn.innerHTML = 'Publishing...';
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="trace-flow"><circle cx="12" cy="12" r="10"/></svg>
+      Publishing...
+    `;
     btn.disabled = true;
     setStatus('syncing to github...', false);
 
@@ -661,7 +1255,7 @@
       // 2. Put new file
       const content = btoa(unescape(encodeURIComponent(JSON.stringify(state, null, 2))));
       const body = {
-        message: 'Updated catalog data via Admin Panel',
+        message: 'Updated catalog data via Apple Glass Admin Panel',
         content: content
       };
       if (sha) body.sha = sha;
@@ -670,16 +1264,38 @@
       if (!putRes.ok) throw new Error(await putRes.text());
 
       lastSaved = JSON.parse(JSON.stringify(state));
-      setStatus('published successfully', true);
-      alert('Success! GitHub updated. Vercel is now deploying your changes.');
+      setStatus('published live', true);
+      showToast('🚀 Published! Vercel is now deploying your live site.');
     } catch (err) {
-      alert('Error publishing to GitHub:\\n' + err.message);
+      alert('Error publishing to GitHub:\n' + err.message);
       setStatus('publish failed', false);
     } finally {
       btn.innerHTML = originalText;
       btn.disabled = false;
     }
   });
+
+  /* ---------- Apple Dark/Light Theme Toggle ---------- */
+  const themeBtn = document.getElementById('theme-toggle');
+  
+  function initTheme() {
+    const saved = localStorage.getItem('lnl_theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }
+
+  themeBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('lnl_theme', next);
+    showToast(next === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode');
+  });
+
+  initTheme();
 </script>
 
 </body>
